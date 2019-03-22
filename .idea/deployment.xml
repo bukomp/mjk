@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" createEmptyFolders="true" filePermissions="420" folderPermissions="493">
+    <serverData>
+      <paths name="home server">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="shell">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/school/mjk/ex1" local="$PROJECT_DIR$/ex1/build" web="/school/mjk/ex1" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>

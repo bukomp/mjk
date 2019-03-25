@@ -33,22 +33,30 @@ class App extends Component {
           'filename': 'http://placekitten.com/2039/1920',
         },
       ],
-      userList:[]
+      jsonArr: []
     };
   }
 
 
-  componentWillMount() {
-    console.log(this.loadJson());
+ componentWillMount() {
+    this.loadJson();
   }
-
+/*
+  componentDidMount() {
+    //console.log(this.state.userList);
+  }
+*/
 
   loadJson() {
-    fetch(`${process.env.PUBLIC_URL}/test.json`)
+    fetch(`test.json`)
       .then( response => {
-        this.setState({
-          userList: response.join()
-        });
+        return response.json()
+      })
+      .then(json => {
+        console.log(json);
+      })
+      .then(json => {
+        this.setState({jsonArr: json});
       })
       .catch(function (error) {
         console.log(error);

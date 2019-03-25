@@ -33,11 +33,31 @@ class App extends Component {
           'filename': 'http://placekitten.com/2039/1920',
         },
       ],
+      userList:[]
     };
   }
+
+
+  componentWillMount() {
+    console.log(this.loadJson());
+  }
+
+
+  loadJson() {
+    fetch(`${process.env.PUBLIC_URL}/test.json`)
+      .then( response => {
+        this.setState({
+          userList: response.join()
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
   tr(num) {
     return(
-      <tr>
+      <tr key={num}>
         <td>
           <img src={this.state.picArray[num].thumbnails.w160} alt="Title"/>
         </td>
@@ -60,6 +80,9 @@ class App extends Component {
     }
     return(
       <table>
+        <tbody>
+          {this.state.userList}
+        </tbody>
         <tbody>
         {trAll}
         </tbody>

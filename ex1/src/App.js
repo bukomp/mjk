@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import {getAllMedia} from "./utils/MediaAPI";
 
 class App extends Component {
   constructor(props)
@@ -40,26 +41,9 @@ class App extends Component {
   }
 
 
- componentDidMount() {
-     this.loadJson();
+ componentWillMount() {
+    getAllMedia().then(result => {this.setState({jsonArr: result})})
  }
-
-  loadJson() {
-    fetch(this.state.downLoc)
-      .then( response => {
-        return response.json()
-      })
-      .then(json => {
-        this.setState({jsonArr: json});
-        return json;
-      })
-      .then(json => {
-        console.log(json);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
 
   tr(num) {
     return(

@@ -38,14 +38,9 @@ class App extends Component {
   }
 
 
- componentWillMount() {
-    this.loadJson();
-  }
-/*
-  componentDidMount() {
-    //console.log(this.state.userList);
-  }
-*/
+ componentDidMount() {
+     this.loadJson();
+ }
 
   loadJson() {
     fetch(`test.json`)
@@ -53,10 +48,11 @@ class App extends Component {
         return response.json()
       })
       .then(json => {
-        console.log(json);
+        this.setState({jsonArr: json});
+        return json;
       })
       .then(json => {
-        this.setState({jsonArr: json});
+        console.log(json);
       })
       .catch(function (error) {
         console.log(error);
@@ -67,14 +63,14 @@ class App extends Component {
     return(
       <tr key={num}>
         <td>
-          <img src={this.state.picArray[num].thumbnails.w160} alt="Title"/>
+          <img src={this.state.jsonArr[num].thumbnails.w160} alt="Title"/>
         </td>
         <td>
           <h3>Title</h3>
-          <p>{this.state.picArray[num].description}</p>
+          <p>{this.state.jsonArr[num].description}</p>
         </td>
         <td>
-          <a href={this.state.picArray[num].filename}>View</a>
+          <a href={this.state.jsonArr[num].filename}>View</a>
         </td>
       </tr>
     );
@@ -82,24 +78,21 @@ class App extends Component {
 
   table() {
     let trAll = [];
-    for(let i = 0; i < this.state.picArray.length; i++)
+    for(let i = 0; i < this.state.jsonArr.length; i++)
     {
       trAll.push(this.tr(i));
     }
     return(
       <table>
         <tbody>
-          {this.state.userList}
-        </tbody>
-        <tbody>
-        {trAll}
+          {trAll}
         </tbody>
       </table>
     );
   }
 
   render() {
-    return (
+      return (
       this.table()
     );
   }

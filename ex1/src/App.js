@@ -6,6 +6,8 @@ class App extends Component {
   {
     super(props);
     this.state = {
+      upLoc:"http://media.mw.metropolia.fi/wbma/uploads/",
+      downLoc:"http://media.mw.metropolia.fi/wbma/media/",
       picArray: [
         {
           'title': 'Title 1',
@@ -43,7 +45,7 @@ class App extends Component {
  }
 
   loadJson() {
-    fetch(`test.json`)
+    fetch(this.state.downLoc)
       .then( response => {
         return response.json()
       })
@@ -63,14 +65,14 @@ class App extends Component {
     return(
       <tr key={num}>
         <td>
-          <img src={this.state.jsonArr[num].thumbnails.w160} alt="Title"/>
+          <img src={this.state.upLoc+this.state.jsonArr[num].filename} width={250} alt="Title"/>
         </td>
         <td>
-          <h3>Title</h3>
+          <h3>{this.state.jsonArr[num].title}</h3>
           <p>{this.state.jsonArr[num].description}</p>
         </td>
         <td>
-          <a href={this.state.jsonArr[num].filename}>View</a>
+          <a href={this.state.upLoc+this.state.jsonArr[num].filename}>View</a>
         </td>
       </tr>
     );

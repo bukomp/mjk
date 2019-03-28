@@ -51,7 +51,7 @@ class App extends Component {
 
   render() {
       return (
-        <Router /*basename='/~username/school/mjk/ex1'*/>
+        <Router basename='/~edvards/school/mjk/ex1'>
           <Route exact path="/" render={props => (
             <React.Fragment>
               <Nav/>

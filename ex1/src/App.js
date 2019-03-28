@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import {getAllMedia} from "./utils/MediaAPI";
+import {Nav} from "./components/nav";
 
 class App extends Component {
   constructor(props)
@@ -69,6 +70,7 @@ class App extends Component {
       trAll.push(this.tr(i));
     }
     return(
+
       <table>
         <tbody>
           {trAll}
@@ -79,7 +81,10 @@ class App extends Component {
 
   render() {
       return (
-      this.table()
+        <React.Fragment>
+          <Nav/>
+          {this.table()}
+        </React.Fragment>
     );
   }
 }

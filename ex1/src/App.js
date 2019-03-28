@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 import {getAllMedia} from "./utils/MediaAPI";
 import {Nav} from "./components/nav";
+import {Home} from "./views/Home";
+import {Profile} from "./views/Profile";
+import {Single} from "./views/Single";
 
 class App extends Component {
   constructor(props)
@@ -36,57 +40,30 @@ class App extends Component {
           },
           'filename': 'http://placekitten.com/2039/1920',
         },
-      ],
-      jsonArr: []
+      ]
     };
   }
 
 
- componentWillMount() {
-    getAllMedia().then(result => {this.setState({jsonArr: result})})
+ componentDidMount() {
+    getAllMedia().then(result => {this.setState({picArray: result})})
  }
-
-  tr(num) {
-    return(
-      <tr key={num}>
-        <td>
-          <img src={this.state.upLoc+this.state.jsonArr[num].filename} width={250} alt="Title"/>
-        </td>
-        <td>
-          <h3>{this.state.jsonArr[num].title}</h3>
-          <p>{this.state.jsonArr[num].description}</p>
-        </td>
-        <td>
-          <a href={this.state.upLoc+this.state.jsonArr[num].filename}>View</a>
-        </td>
-      </tr>
-    );
-  }
-
-  table() {
-    let trAll = [];
-    for(let i = 0; i < this.state.jsonArr.length; i++)
-    {
-      trAll.push(this.tr(i));
-    }
-    return(
-
-      <table>
-        <tbody>
-          {trAll}
-        </tbody>
-      </table>
-    );
-  }
 
   render() {
       return (
-        <React.Fragment>
-          <Nav/>
-          {this.table()}
-        </React.Fragment>
+        <Router /*basename='/~username/school/mjk/ex1'*/>
+          <Route exact path="/" render={props => (
+            <React.Fragment>
+              <Nav/>
+              <Home picArray={this.state.picArray} />
+            </React.Fragment>
+          )}/>
+          <Route path="/home" component={Home} />
+          <Route path="/profile" component={Profile} />
+          <Route path="/single/:id" component={Single} />
+        </Router>
     );
   }
 }
-
+//<Single file_id={props.picArray[props.num]["file_id"]}/>
 export default App;

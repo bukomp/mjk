@@ -12,7 +12,7 @@ export default function Tr(props) {
         <p key={props.num+1}>{props.picArray[props.num].description}</p>
       </td>
       <td key={props.num+2}>
-        <Link to={`/route/${props.picArray[props.num]["file_id"]}`} key={props.num}>View</Link>
+        <Link to={`/${props.picArray[props.num]["file_id"]}`} key={props.num}>View</Link>
       </td>
     </tr>
   );

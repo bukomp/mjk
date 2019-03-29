@@ -13,7 +13,9 @@ class Single extends Component {
   };
 
   componentDidMount() {
-    getSingleMedia().then(json => {this.setState({file: {filename: json.filename, title: json.title}})});
+    const { id } = this.props.match.params;
+    console.log(id);
+    getSingleMedia(id).then(json => {this.setState({file: {filename: json.filename, title: json.title}})});
   }
 
   render() {

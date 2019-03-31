@@ -22,4 +22,17 @@ function getSingleMedia(id) {
   );
 }
 
+function register() {
+
+}
+
+function login() {
+
+}
+
+function checkIfUserNameExists() {
+
+}
+
+
 export {getAllMedia, getSingleMedia}

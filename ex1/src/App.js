@@ -6,6 +6,7 @@ import {Nav} from "./components/nav";
 import {Home} from "./views/Home";
 import {Profile} from "./views/Profile";
 import {Single} from "./views/Single";
+import Login from "./views/Login";
 
 class App extends Component {
   constructor(props)
@@ -55,10 +56,15 @@ class App extends Component {
           <Route exact path="/" render={props => (
             <React.Fragment>
               <Nav/>
+              <Login/>
+            </React.Fragment>
+          )}/>
+          <Route path="/home" render={props => (
+            <React.Fragment>
+              <Nav/>
               <Home picArray={this.state.picArray} />
             </React.Fragment>
           )}/>
-          <Route path="/home" component={Home} />
           <Route path="/profile" component={Profile} />
           <Route path="/:id" component={Single} />
         </Router>

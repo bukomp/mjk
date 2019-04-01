@@ -53,15 +53,14 @@ class App extends Component {
   render() {
       return (
         <Router basename='/~edvards/school/mjk/ex1'>
-          <Route exact path="/" render={props => (
+          <Nav/>
+          <Route path="/" render={props => (
             <React.Fragment>
-              <Nav/>
               <Login/>
             </React.Fragment>
           )}/>
           <Route path="/home" render={props => (
             <React.Fragment>
-              <Nav/>
               <Home picArray={this.state.picArray} />
             </React.Fragment>
           )}/>

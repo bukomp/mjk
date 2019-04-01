@@ -21,7 +21,6 @@ class Single extends Component {
   render() {
     return (
       <React.Fragment>
-        <Nav/>
         <h1>{this.state.file.title}</h1>
         <img src={this.mediaUrl + this.state.file.filename} alt={this.state.file.title}/>
       </React.Fragment>

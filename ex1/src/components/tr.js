@@ -1,19 +1,38 @@
-import React from "react";
-import {Link} from "react-router-dom";
+import React from 'react';
+import {Link} from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-export default function Tr(props) {
-  return(
-    <tr key={props.num}>
-      <td key={props.num}>
-        <img src={"http://media.mw.metropolia.fi/wbma/uploads/"+props.picArray[props.num].filename} width={250} alt="Title" key={props.num}/>
-      </td>
-      <td key={props.num+1}>
-        <h3 key={props.num}>{props.picArray[props.num].title}</h3>
-        <p key={props.num+1}>{props.picArray[props.num].description}</p>
-      </td>
-      <td key={props.num+2}>
-        <Link to={`/${props.picArray[props.num]["file_id"]}`} key={props.num}>View</Link>
-      </td>
-    </tr>
+const mediaUrl = 'http://media.mw.metropolia.fi/wbma/uploads/';
+
+const Img = (props) => {
+  console.log('props', props);
+  const {thumbnails, screenshot, title} = props.pic;
+  if (thumbnails !== null) {
+    return <img src={mediaUrl + thumbnails.w160} alt={title}/>;
+  } else {
+    return <img src={mediaUrl + screenshot} alt={title}/>;
+  }
+};
+
+const Tr = (props) => {
+  const {title, description, file_id} = props.pic;
+  return (
+      <tr>
+        <td>
+          <Img pic={props.pic}/>
+        </td>
+        <td>
+          <h3>{title}</h3>
+          <p>{description}</p>
+        </td>
+        <td>
+          <Link to={'single/' + file_id}>View</Link>
+        </td>
+      </tr>
   );
-}
+};
+
+Tr.propTypes = {
+  pic: PropTypes.object,
+};
+export default Tr;

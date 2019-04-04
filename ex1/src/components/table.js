@@ -1,20 +1,22 @@
-import React from "react";
-import Tr from "./tr";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Tr from './Tr';
 
-export default function Table(props) {
-  let trAll = [];
-  for(let i = 0; i < props.picArray.length; i++)
-  {
-    trAll.push(<Tr num={i} picArray={props.picArray}/>);
-  }
-  console.log(trAll);
-  console.log(<Tr num={1} picArray={props.picArray}/>);
-  return(
-
-    <table>
-      <tbody>
-      {trAll}
-      </tbody>
-    </table>
+const Table = (props) => {
+  const rows = props.picArray.map((item, i) => {
+    return <Tr key={i} pic={item}/>;
+  });
+  return (
+      <table>
+        <tbody>
+        {rows}
+        </tbody>
+      </table>
   );
-}
+};
+
+Table.propTypes = {
+  picArray: PropTypes.array,
+};
+
+export default Table;

@@ -1,13 +1,20 @@
 import React from 'react';
-import {Nav} from "../components/nav";
+import PropTypes from 'prop-types';
 
-function Profile(props) {
+const Profile = (props) => {
+  const {username, email, full_name} = props.user;
   return (
-    <React.Fragment>
-
-      <h1>Profile</h1>
-    </React.Fragment>
+      <React.Fragment>
+        <h1>Profile</h1>
+        <p>Username: {username}</p>
+        <p>email: {email}</p>
+        <p>Full name: {full_name}</p>
+      </React.Fragment>
   );
-}
+};
 
-export {Profile};
+Profile.propTypes = {
+  user: PropTypes.object,
+};
+
+export default Profile;

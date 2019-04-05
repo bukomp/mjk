@@ -22,6 +22,17 @@ const getSingleMedia = (id) => {
   });
 };
 
+const getUserProfilePic = (id, token) => {
+  const settings = {
+    headers: {
+      'x-access-token': token,
+    }
+  };
+  return fetch(apiUrl + 'tags/profile', settings).then(response => {
+    return response.json();
+  });
+};
+
 const login = (username, password) => {
   const settings = {
     method: 'POST',
@@ -59,4 +70,4 @@ const getUser = (token) => {
   });
 };
 
-export {getAllMedia, getSingleMedia, login, register, getUser};
+export {getAllMedia, getSingleMedia, login, register, getUser, getUserProfilePic};

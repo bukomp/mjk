@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {login, register, getUser} from '../util/MediaAPI';
+import {login, register, getUser, getUserProfilePic} from '../util/MediaAPI';
+import {Button, Input} from '@material-ui/core/';
+
 
 class Login extends Component {
   state = {
@@ -59,35 +61,37 @@ class Login extends Component {
         <React.Fragment>
           <h1>Login</h1>
           <form onSubmit={this.handleLoginSubmit}>
-            <input type="text" name="username" placeholder="username"
+            <Input type="text" name="username" placeholder="username"
                    value={this.state.username}
                    onChange={this.handleInputChange}/>
             <br/>
-            <input type="password" name="password" placeholder="password"
+            <Input type="password" name="password" placeholder="password"
                    value={this.state.password}
                    onChange={this.handleInputChange}/>
             <br/>
-            <button type="submit">Login</button>
+            <br/>
+            <Button variant={"contained"} type="submit">Login</Button>
           </form>
           <h1>Register</h1>
           <form onSubmit={this.handleRegisterSubmit}>
-            <input type="text" name="username" placeholder="username"
+            <Input type="text" name="username" placeholder="username"
                    value={this.state.username}
                    onChange={this.handleInputChange}/>
             <br/>
-            <input type="password" name="password" placeholder="password"
+            <Input type="password" name="password" placeholder="password"
                    value={this.state.password}
                    onChange={this.handleInputChange}/>
             <br/>
-            <input type="email" name="email" placeholder="email"
+            <Input type="email" name="email" placeholder="email"
                    value={this.state.email}
                    onChange={this.handleInputChange}/>
             <br/>
-            <input type="text" name="full_name" placeholder="full name"
+            <Input type="text" name="full_name" placeholder="full name"
                    value={this.state.full_name}
                    onChange={this.handleInputChange}/>
             <br/>
-            <button type="submit">Login</button>
+            <br/>
+            <Button variant={"contained"} type="submit">Register</Button>
           </form>
         </React.Fragment>
     );

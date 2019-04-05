@@ -1,31 +1,31 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
+import {Button, List, ListItem} from '@material-ui/core/';
 
 const Nav = (props) => {
   return (
       <nav>
-        <ul>
-          <li>
-            <Link to="/home">Home</Link>
-          </li>
+        <List style={{listStyle:"none", display: "flex"}}>
+          <ListItem>
+            <Button variant="text" component={Link} to="/home">Home</Button>
+          </ListItem>
           {props.checkLogin() &&
           <React.Fragment>
-            <li>
-              <Link to='/profile'>Profile</Link>
-            </li>
-            <li>
-              <Link to='/logout'>Logout</Link>
-            </li>
+            <ListItem>
+              <Button variant={"text"} component={Link} to="/profile">Profile</Button>
+            </ListItem>
+            <ListItem>
+              <Button variant={"text"} component={Link} to="/logout">Logout</Button>
+            </ListItem>
           </React.Fragment>
           }
           {!props.checkLogin() &&
-          <li>
-            <Link to='/'>Login</Link>
-          </li>
+          <ListItem>
+            <Button variant={"text"} component={Link} to="/">Login</Button>
+          </ListItem>
           }
-
-        </ul>
+        </List>
       </nav>
   );
 };

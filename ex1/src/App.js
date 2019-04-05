@@ -25,7 +25,8 @@ class App extends Component {
 
   componentDidMount() {
     getAllMedia().then((pics) => {
-      console.log(pics);
+      //console.log(pics);
+      console.log(this.state.user);
       this.setState({picArray: pics});
     });
   }

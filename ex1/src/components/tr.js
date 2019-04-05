@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
+import {Button} from '@material-ui/core';
 
 const mediaUrl = 'http://media.mw.metropolia.fi/wbma/uploads/';
 
@@ -26,7 +27,7 @@ const Tr = (props) => {
           <p>{description}</p>
         </td>
         <td>
-          <Link to={'single/' + file_id}>View</Link>
+          <Button><Link to={'single/' + file_id} style={{color:"blue", textDecoration: "none"}}>View</Link></Button>
         </td>
       </tr>
   );

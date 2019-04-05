@@ -15,9 +15,11 @@ class App extends Component {
     user: null,
   };
 
-  setUser = (user) => {
-    this.setState({user});
+  setUser = (user, avatar) => {
+    this.setState({user, avatar});
   };
+
+
 
   checkLogin = () => {
     return this.state.user !== null;
@@ -43,7 +45,7 @@ class App extends Component {
             <Route path="/single/:id" component={Single}/>
 
             <Route path="/profile" render={(props) => (
-                <Profile {...props} user={this.state.user}/>
+                <Profile {...props} user={this.state.user} avatar={this.state.avatar}/>
             )}/>
 
             <Route exact path="/" render={(props) => (

@@ -28,8 +28,14 @@ const getUserProfilePic = (id, token) => {
       'x-access-token': token,
     }
   };
-  return fetch(apiUrl + 'tags/profile', settings).then(response => {
-    return response.json();
+  return fetch(apiUrl + 'tags/profile', settings).then( response => {return response.json();}).then(json => {
+    let pic;
+    for(let g of json){
+      if(g["user_id"] === id) pic = 'http://media.mw.metropolia.fi/wbma/uploads/'+g.filename;
+    }
+    console.log(pic + " I AM HERE!!!");
+
+    return pic;
   });
 };
 
@@ -42,8 +48,12 @@ const login = (username, password) => {
     body: JSON.stringify({username, password}),
   };
   return fetch(apiUrl + 'login', settings).then(response => {
-    return response.json();
-  });
+      return response.json();
+  })
+    .then( response => {
+      getUserProfilePic(response.user["user_id"],response.token).then(pic => {response.user.avatar = pic});
+      return response;
+    });
 };
 
 const register = (user) => {
@@ -67,6 +77,10 @@ const getUser = (token) => {
   };
   return fetch(apiUrl + 'users/user', settings).then(response => {
     return response.json();
+  }).then( response => {
+    console.log(response);
+    getUserProfilePic(response["user_id"],response.token).then(pic => {response.avatar = pic});
+    return response;
   });
 };
 

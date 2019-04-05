@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {login, register, getUser, getUserProfilePic} from '../util/MediaAPI';
+import {login, register, getUser} from '../util/MediaAPI';
 import {Button, Input} from '@material-ui/core/';
 
 
@@ -26,7 +26,10 @@ class Login extends Component {
   };
 
   doLogin = () => {
+
     login(this.state.username, this.state.password).then(response => {
+
+
       console.log(response);
       this.props.setUser(response.user);
       localStorage.setItem('token', response.token);

@@ -10,6 +10,7 @@ class Login extends Component {
     password: '',
     email: '',
     full_name: '',
+    fragmentLogin: true,
   };
 
   handleLoginSubmit = (evt) => {
@@ -59,43 +60,59 @@ class Login extends Component {
     }
   }
 
+  toggleFragment = () => {
+    this.setState(state => ({
+      fragmentLogin: !state.fragmentLogin
+    }));
+  };
+
   render() {
     return (
         <React.Fragment>
-          <h1>Login</h1>
-          <form onSubmit={this.handleLoginSubmit}>
-            <Input type="text" name="username" placeholder="username"
-                   value={this.state.username}
-                   onChange={this.handleInputChange}/>
-            <br/>
-            <Input type="password" name="password" placeholder="password"
-                   value={this.state.password}
-                   onChange={this.handleInputChange}/>
-            <br/>
-            <br/>
-            <Button variant={"contained"} type="submit">Login</Button>
-          </form>
-          <h1>Register</h1>
-          <form onSubmit={this.handleRegisterSubmit}>
-            <Input type="text" name="username" placeholder="username"
-                   value={this.state.username}
-                   onChange={this.handleInputChange}/>
-            <br/>
-            <Input type="password" name="password" placeholder="password"
-                   value={this.state.password}
-                   onChange={this.handleInputChange}/>
-            <br/>
-            <Input type="email" name="email" placeholder="email"
-                   value={this.state.email}
-                   onChange={this.handleInputChange}/>
-            <br/>
-            <Input type="text" name="full_name" placeholder="full name"
-                   value={this.state.full_name}
-                   onChange={this.handleInputChange}/>
-            <br/>
-            <br/>
-            <Button variant={"contained"} type="submit">Register</Button>
-          </form>
+          {this.state.fragmentLogin &&
+            <React.Fragment key={"login"}>
+              <h1>Login</h1>
+              <form onSubmit={this.handleLoginSubmit}>
+                <Input type="text" name="username" placeholder="username"
+                       value={this.state.username}
+                       onChange={this.handleInputChange}/>
+                <br/>
+                <Input type="password" name="password" placeholder="password"
+                       value={this.state.password}
+                       onChange={this.handleInputChange}/>
+                <br/>
+                <br/>
+                <Button variant={"contained"} type="submit">Login</Button>
+                <Button variant={"text"} style={{marginLeft:"2rem"}} onClick={this.toggleFragment}>No account yet?</Button>
+              </form>
+            </React.Fragment>
+          }
+          {!this.state.fragmentLogin &&
+            <React.Fragment key={"register"}>
+              <h1>Register</h1>
+              <form onSubmit={this.handleRegisterSubmit}>
+                <Input type="text" name="username" placeholder="username"
+                       value={this.state.username}
+                       onChange={this.handleInputChange}/>
+                <br/>
+                <Input type="password" name="password" placeholder="password"
+                       value={this.state.password}
+                       onChange={this.handleInputChange}/>
+                <br/>
+                <Input type="email" name="email" placeholder="email"
+                       value={this.state.email}
+                       onChange={this.handleInputChange}/>
+                <br/>
+                <Input type="text" name="full_name" placeholder="full name"
+                       value={this.state.full_name}
+                       onChange={this.handleInputChange}/>
+                <br/>
+                <br/>
+                <Button variant={"contained"} type="submit">Register</Button>
+                <Button variant={"text"} style={{marginLeft: "2rem"}} onClick={this.toggleFragment}>Back to logging in</Button>
+              </form>
+            </React.Fragment>
+          }
         </React.Fragment>
     );
   }

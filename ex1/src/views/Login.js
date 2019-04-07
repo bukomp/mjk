@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {login, register, getUser} from '../util/MediaAPI';
 import {Button, Input, InputLabel} from '@material-ui/core/';
+import { ValidatorForm } from 'react-form-validator-core';
+import TextValidator from '../util/TextValidator';
 
 
 class Login extends Component {
@@ -84,11 +86,17 @@ class Login extends Component {
           {this.state.fragmentLogin &&
             <React.Fragment>
               <h1>Login</h1>
-              <form onSubmit={this.handleLoginSubmit}>
-                <Input type="text" name="username" placeholder="username"
-                       value={this.state.username}
-                       onChange={this.handleInputChange}/>
-                <br/>
+              <ValidatorForm ref="form" onSubmit={this.handleLoginSubmit}>
+
+                <TextValidator
+                  placeholder="username"
+                  name="username"
+                  type="username"
+                  value={this.state.username}
+                  onChange={this.handleInputChange}
+                  validators={['isString']}
+                  errorMessages={['username is not valid']}
+                />
                 <Input type="password" name="password" placeholder="password"
                        value={this.state.password}
                        onChange={this.handleInputChange}/>
@@ -96,13 +104,23 @@ class Login extends Component {
                 <br/>
                 <Button variant={"contained"} type="submit">Login</Button>
                 <Button variant={"text"} style={{marginLeft:"2rem"}} onClick={this.toggleFragment}>No account yet?</Button>
-              </form>
+              </ValidatorForm>
             </React.Fragment>
           }
           {!this.state.fragmentLogin &&
             <React.Fragment>
               <h1>Register</h1>
-              <form onSubmit={this.handleRegisterSubmit}>
+              <ValidatorForm ref="form" onSubmit={this.handleRegisterSubmit}>
+
+                <TextValidator
+                  onChange={this.handleChange}
+                  name="text"
+                  type="text"
+                  validators={['isText']}
+                  errorMessages={['File is not valid']}
+                />
+
+
                 <Input id="my-input" type="text" name="username" placeholder="username"
                        value={this.state.username}
                        onChange={this.handleInputChange}
@@ -125,7 +143,7 @@ class Login extends Component {
                 <br/>
                 <Button variant={"contained"} type="submit">Register</Button>
                 <Button variant={"text"} style={{marginLeft: "2rem"}} onClick={this.toggleFragment}>Back to logging in</Button>
-              </form>
+              </ValidatorForm>
             </React.Fragment>
           }
         </React.Fragment>

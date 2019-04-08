@@ -78,10 +78,12 @@ const getUser = (token) => {
   return fetch(apiUrl + 'users/user', settings).then(response => {
     return response.json();
   }).then( response => {
-    console.log(response);
+    //console.log(response);
     getUserProfilePic(response["user_id"],response.token).then(pic => {response.avatar = pic});
     return response;
   });
 };
+
+
 
 export {getAllMedia, getSingleMedia, login, register, getUser, getUserProfilePic};

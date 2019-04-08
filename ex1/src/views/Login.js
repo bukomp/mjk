@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {login, register, getUser} from '../util/MediaAPI';
-import {Button, Input, InputLabel} from '@material-ui/core/';
+import {Button} from '@material-ui/core/';
 import { ValidatorForm } from 'react-form-validator-core';
 import TextValidator from '../util/TextValidator';
 
@@ -30,14 +30,13 @@ class Login extends Component {
   };
 
   doLogin = () => {
-
     login(this.state.username, this.state.password).then(response => {
-
-
-      console.log(response);
-      this.props.setUser(response.user);
-      localStorage.setItem('token', response.token);
-      this.props.history.push('/home');
+      if(response.user !== undefined) {
+        console.log(response);
+        this.props.setUser(response.user);
+        localStorage.setItem('token', response.token);
+        this.props.history.push('/home');
+      }
     });
   };
 
@@ -45,12 +44,24 @@ class Login extends Component {
     const target = evt.target;
     const value = target.value;
     const name = target.name;
-
     console.log(value, name);
 
     this.setState({
       [name]: value,
     });
+
+    console.log("1");
+    if(name==="username")this.checkUsernameExist(value);
+
+  };
+
+  checkUsernameExist = (name) => {
+    fetch("http://media.mw.metropolia.fi/wbma/users/username/" + name)
+      .then(result => result.json())
+      .then(json => {
+        console.log(json);
+        this.setState(state => ({usernameInUse: !json.available}));
+      });
   };
 
   componentDidMount() {
@@ -61,6 +72,20 @@ class Login extends Component {
         this.props.history.push('/home');
       });
     }
+
+    // custom rule will have name 'isPasswordMatch'
+    ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
+      return value === this.state.password;
+    });
+    ValidatorForm.addValidationRule('isUserAvailable', () => {
+      console.log("2");
+      console.log(this.state.usernameInUse+"   "+this.state.username);
+      return this.state.usernameInUse;
+
+    });
+    /*ValidatorForm.addValidationRule('isUserNotAvailable', () => {
+      this.checkUsernameExist();
+    });*/
   }
 
   toggleFragment = () => {
@@ -71,12 +96,8 @@ class Login extends Component {
 
   handleInputBlur = () => {
 
-    (this.state.username !== ""&&!null)?fetch("http://media.mw.metropolia.fi/wbma/users/username/" + this.state.username)
-      .then(result => result.json())
-      .then(json => {
-        console.log(json);
-        (json.available)?this.setState(state => ({usernameInUse: false})):this.setState(state => ({usernameInUse: true}));
-      }):this.setState(state => ({usernameInUse: null}));
+    this.checkUsernameExist();
+    //console.log(this.state.usernameInUse);
 
   };
 
@@ -86,7 +107,12 @@ class Login extends Component {
           {this.state.fragmentLogin &&
             <React.Fragment>
               <h1>Login</h1>
-              <ValidatorForm ref="form" onSubmit={this.handleLoginSubmit}>
+              <ValidatorForm
+                ref={this.form}
+                instantValidate={false}
+                onSubmit={this.handleLoginSubmit}
+                onError={errors => console.log(errors)}
+              >
 
                 <TextValidator
                   placeholder="username"
@@ -94,12 +120,19 @@ class Login extends Component {
                   type="username"
                   value={this.state.username}
                   onChange={this.handleInputChange}
-                  validators={['isString']}
-                  errorMessages={['username is not valid']}
+                  validators={["required", "minStringLength:3", "isUserAvailable"]}
+                  errorMessages={["this field is required", "username is too short",'username is not available']}
                 />
-                <Input type="password" name="password" placeholder="password"
-                       value={this.state.password}
-                       onChange={this.handleInputChange}/>
+                <TextValidator
+                  placeholder="password"
+                  name="password"
+                  type="password"
+                  value={this.state.password}
+                  onChange={this.handleInputChange}
+                  validators={["required"]}
+                  errorMessages={["this field is required"]}
+                />
+
                 <br/>
                 <br/>
                 <Button variant={"contained"} type="submit">Login</Button>
@@ -110,35 +143,49 @@ class Login extends Component {
           {!this.state.fragmentLogin &&
             <React.Fragment>
               <h1>Register</h1>
-              <ValidatorForm ref="form" onSubmit={this.handleRegisterSubmit}>
+              <ValidatorForm
+                ref={this.form}
+                instantValidate={false}
+                onSubmit={this.handleRegisterSubmit}
+                onError={errors => console.log(errors)}
+              >
 
                 <TextValidator
-                  onChange={this.handleChange}
-                  name="text"
-                  type="text"
-                  validators={['isText']}
-                  errorMessages={['File is not valid']}
+                  placeholder="username"
+                  name="username"
+                  type="username"
+                  value={this.state.username}
+                  onChange={this.handleInputChange}
+                  validators={["required", "minStringLength:3"]}
+                  errorMessages={["this field is required", "username is too short",'username is not available']}
                 />
-
-
-                <Input id="my-input" type="text" name="username" placeholder="username"
-                       value={this.state.username}
-                       onChange={this.handleInputChange}
-                       onBlur={this.handleInputBlur}
+                <TextValidator
+                  type="password"
+                  name="password"
+                  placeholder="password"
+                  value={this.state.username}
+                  onChange={this.handleInputChange}
+                  validators={["required", "minStringLength:3"]}
+                  errorMessages={["this field is required", "username is too short",'username is not available']}
                 />
-                <InputLabel label="Error" htmlFor="my-input" style={{marginLeft: "2rem", color: "#d53131"}}>{this.state.usernameInUse && "Sorry, but this username is already in use."}{!this.state.usernameInUse && (this.state.usernameInUse!==null) && "✅"}</InputLabel>
-                <br/>
-                <Input type="password" name="password" placeholder="password"
-                       value={this.state.password}
-                       onChange={this.handleInputChange}/>
-                <br/>
-                <Input type="email" name="email" placeholder="email"
-                       value={this.state.email}
-                       onChange={this.handleInputChange}/>
-                <br/>
-                <Input type="text" name="full_name" placeholder="full name"
-                       value={this.state.full_name}
-                       onChange={this.handleInputChange}/>
+                <TextValidator
+                  type="email"
+                  name="email"
+                  placeholder="email"
+                  value={this.state.username}
+                  onChange={this.handleInputChange}
+                  validators={["required", "minStringLength:3"]}
+                  errorMessages={["this field is required", "username is too short",'username is not available']}
+                />
+                <TextValidator
+                  type="full_name"
+                  name="full_name"
+                  placeholder="full name"
+                  value={this.state.username}
+                  onChange={this.handleInputChange}
+                  validators={["required", "minStringLength:3"]}
+                  errorMessages={["this field is required", "username is too short",'username is not available']}
+                />
                 <br/>
                 <br/>
                 <Button variant={"contained"} type="submit">Register</Button>

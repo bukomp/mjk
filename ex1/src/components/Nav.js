@@ -7,6 +7,7 @@ const Nav = (props) => {
   return (
       <nav>
         <List style={{listStyle:"none", display: "flex"}}>
+
           <ListItem>
             <Button variant="text" component={Link} to="/home">Home</Button>
           </ListItem>

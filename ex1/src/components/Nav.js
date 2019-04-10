@@ -19,6 +19,9 @@ const Nav = (props) => {
             <ListItem>
               <Button variant={"text"} component={Link} to="/logout">Logout</Button>
             </ListItem>
+            <ListItem>
+              <Button variant={"text"} component={Link} to="/upload">Upload</Button>
+            </ListItem>
           </React.Fragment>
           }
           {!props.checkLogin() &&

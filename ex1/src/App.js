@@ -7,6 +7,7 @@ import Nav from './components/Nav';
 import Login from './views/Login';
 import Profile from './views/Profile';
 import Logout from './views/Logout';
+import Uploads from './views/Uploads';
 
 class App extends Component {
 
@@ -45,15 +46,19 @@ class App extends Component {
             <Route path="/single/:id" component={Single}/>
 
             <Route path="/profile" render={(props) => (
-                <Profile {...props} user={this.state.user} avatar={this.state.avatar}/>
+              <Profile {...props} user={this.state.user} avatar={this.state.avatar}/>
             )}/>
 
             <Route exact path="/" render={(props) => (
-                <Login {...props} setUser={this.setUser}/>
+              <Login {...props} setUser={this.setUser}/>
             )}/>
 
             <Route path="/logout" render={(props) => (
-                <Logout {...props} setUser={this.setUser}/>
+              <Logout {...props} setUser={this.setUser}/>
+            )}/>
+
+            <Route path="/upload" render={(props) => (
+              <Uploads {...props}/>
             )}/>
           </div>
         </Router>

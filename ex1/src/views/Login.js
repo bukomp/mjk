@@ -68,7 +68,7 @@ class Login extends Component {
       })
     );
 
-    if(target.name==="username" && this.state.password !== ""){this.checkUsernameExist(value); if(this.state.fragmentLogin === true)this.checkPassword(value, this.state.password);}
+    if(target.name==="username"){this.checkUsernameExist(value); if(this.state.fragmentLogin === true)this.checkPassword(value, this.state.password);}
     if(target.name==="password" && this.state.fragmentLogin === true && this.state.username !== "" && this.state.password !== "")this.checkPassword(this.state.username, value);
 
   };
@@ -106,6 +106,7 @@ class Login extends Component {
       return value === this.state.password;
     });
     ValidatorForm.addValidationRule('isUserAvailable', () => {
+      console.log("username is available: "+this.state.usernameInUse);
       return this.state.usernameInUse;
     });
     ValidatorForm.addValidationRule('isUserRegisterAvailable', () => {

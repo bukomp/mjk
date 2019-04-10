@@ -39,10 +39,10 @@ class Login extends Component {
 
   doLogin = () => {
     login(this.state.username, this.state.password)
-      /*.then( response => {
+      .then( response => {
       getUserProfilePic(response.user["user_id"],response.token).then(pic => {response.user.avatar = pic});
       return response;
-    })*/
+    })
       .then(response => {
       if(response.user !== undefined) {
         console.log(response);

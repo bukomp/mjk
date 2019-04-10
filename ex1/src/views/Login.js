@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {login, register, getUser} from '../util/MediaAPI';
+import {login, register, getUser, getUserProfilePic} from '../util/MediaAPI';
 import {Button} from '@material-ui/core/';
 import { ValidatorForm } from 'react-form-validator-core';
 import TextValidator from '../util/TextValidator';
@@ -12,8 +12,16 @@ class Login extends Component {
     password: '',
     email: '',
     full_name: '',
+    passwordConfirm: '',
+    user:{
+      username: '',
+      password: '',
+      email: '',
+      full_name: ''
+    },
     fragmentLogin: true,
-    usernameInUse: null
+    usernameInUse: null,
+    validPassword: null
   };
 
   handleLoginSubmit = (evt) => {
@@ -23,14 +31,19 @@ class Login extends Component {
 
   handleRegisterSubmit = (evt) => {
     evt.preventDefault();
-    register(this.state).then(user => {
+    register(this.state.user).then(user => {
       console.log(user);
       this.doLogin();
     });
   };
 
   doLogin = () => {
-    login(this.state.username, this.state.password).then(response => {
+    login(this.state.username, this.state.password)
+      /*.then( response => {
+      getUserProfilePic(response.user["user_id"],response.token).then(pic => {response.user.avatar = pic});
+      return response;
+    })*/
+      .then(response => {
       if(response.user !== undefined) {
         console.log(response);
         this.props.setUser(response.user);
@@ -41,18 +54,33 @@ class Login extends Component {
   };
 
   handleInputChange = (evt) => {
+    console.log(this.state.fragmentLogin);
     const target = evt.target;
     const value = target.value;
     const name = target.name;
+    const newUser = Object.assign({}, this.state.user);
+    if(name !== "passwordConfirm")newUser[name] = value;
     console.log(value, name);
 
-    this.setState({
-      [name]: value,
-    });
+    this.setState(state => ({
+        [name]: value,
+        user: newUser
+      })
+    );
 
-    console.log("1");
-    if(name==="username")this.checkUsernameExist(value);
+    if(target.name==="username" && this.state.password !== ""){this.checkUsernameExist(value); if(this.state.fragmentLogin === true)this.checkPassword(value, this.state.password);}
+    if(target.name==="password" && this.state.fragmentLogin === true && this.state.username !== "" && this.state.password !== "")this.checkPassword(this.state.username, value);
 
+  };
+
+  checkPassword = (login_v,pass) => {
+    console.log((login_v + pass));
+    login(login_v, pass)
+      .then(
+        response => {
+          console.log(response);
+          (response.user === undefined) ? this.setState(state => ({validPassword: false})) : this.setState(state => ({validPassword: true}));
+        });
   };
 
   checkUsernameExist = (name) => {
@@ -78,27 +106,28 @@ class Login extends Component {
       return value === this.state.password;
     });
     ValidatorForm.addValidationRule('isUserAvailable', () => {
-      console.log("2");
-      console.log(this.state.usernameInUse+"   "+this.state.username);
       return this.state.usernameInUse;
-
     });
-    /*ValidatorForm.addValidationRule('isUserNotAvailable', () => {
-      this.checkUsernameExist();
-    });*/
+    ValidatorForm.addValidationRule('isUserRegisterAvailable', () => {
+      return !this.state.usernameInUse;
+    });
+    ValidatorForm.addValidationRule('validPassword', () => {
+      console.log(this.state.validPassword);
+      return this.state.validPassword;
+    });
+    ValidatorForm.addValidationRule('confirmPassword', (value) => {
+      console.log(value, this.state.user.password);
+      return value===this.state.user.password;
+    });
+    ValidatorForm.addValidationRule('validEmail', (value) => {
+      return(value.includes('@'));
+    });
   }
 
   toggleFragment = () => {
     this.setState(state => ({
       fragmentLogin: !state.fragmentLogin
     }));
-  };
-
-  handleInputBlur = () => {
-
-    this.checkUsernameExist();
-    //console.log(this.state.usernameInUse);
-
   };
 
   render() {
@@ -113,7 +142,6 @@ class Login extends Component {
                 onSubmit={this.handleLoginSubmit}
                 onError={errors => console.log(errors)}
               >
-
                 <TextValidator
                   placeholder="username"
                   name="username"
@@ -129,10 +157,9 @@ class Login extends Component {
                   type="password"
                   value={this.state.password}
                   onChange={this.handleInputChange}
-                  validators={["required"]}
-                  errorMessages={["this field is required"]}
+                  validators={["required", "validPassword"]}
+                  errorMessages={["This field is required", "Check your password"]}
                 />
-
                 <br/>
                 <br/>
                 <Button variant={"contained"} type="submit">Login</Button>
@@ -149,42 +176,50 @@ class Login extends Component {
                 onSubmit={this.handleRegisterSubmit}
                 onError={errors => console.log(errors)}
               >
-
                 <TextValidator
                   placeholder="username"
                   name="username"
                   type="username"
-                  value={this.state.username}
+                  value={this.state.user.username}
                   onChange={this.handleInputChange}
-                  validators={["required", "minStringLength:3"]}
+                  validators={["required", "minStringLength:3", "isUserRegisterAvailable"]}
                   errorMessages={["this field is required", "username is too short",'username is not available']}
                 />
                 <TextValidator
                   type="password"
                   name="password"
                   placeholder="password"
-                  value={this.state.username}
+                  value={this.state.user.password}
                   onChange={this.handleInputChange}
-                  validators={["required", "minStringLength:3"]}
-                  errorMessages={["this field is required", "username is too short",'username is not available']}
+                  validators={["required", "minStringLength:5"]}
+                  errorMessages={["this field is required", "minimal password length is 5 characters"]}
+                />
+                <TextValidator
+                  type="password"
+                  name="passwordConfirm"
+                  placeholder="confirm password"
+                  value={this.state.passwordConfirm}
+                  onChange={this.handleInputChange}
+                  validators={["required", "confirmPassword"]}
+                  errorMessages={["this field is required","passwords doesn't match"]}
                 />
                 <TextValidator
                   type="email"
                   name="email"
                   placeholder="email"
-                  value={this.state.username}
+                  value={this.state.user.email}
                   onChange={this.handleInputChange}
-                  validators={["required", "minStringLength:3"]}
-                  errorMessages={["this field is required", "username is too short",'username is not available']}
+                  validators={["required", "validEmail"]}
+                  errorMessages={["this field is required", 'email is not correct']}
                 />
                 <TextValidator
                   type="full_name"
                   name="full_name"
                   placeholder="full name"
-                  value={this.state.username}
+                  value={this.state.user.full_name}
                   onChange={this.handleInputChange}
-                  validators={["required", "minStringLength:3"]}
-                  errorMessages={["this field is required", "username is too short",'username is not available']}
+                  validators={["required"]}
+                  errorMessages={["this field is required"]}
                 />
                 <br/>
                 <br/>

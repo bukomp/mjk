@@ -49,11 +49,7 @@ const login = (username, password) => {
   };
   return fetch(apiUrl + 'login', settings).then(response => {
       return response.json();
-  })
-    .then( response => {
-      getUserProfilePic(response.user["user_id"],response.token).then(pic => {response.user.avatar = pic});
-      return response;
-    });
+  });
 };
 
 const register = (user) => {

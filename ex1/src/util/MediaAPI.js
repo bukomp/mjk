@@ -80,6 +80,16 @@ const getUser = (token) => {
   });
 };
 
+const uploadFile = (token, formData) => {
+  const settings = {
+    method: 'POST',
+    headers: {
+      'x-access-token': token,
+    },
+    body: formData
+  };
+  return fetch('http://media.mw.metropolia.fi/wbma/media', settings).then(result => result.json());
+};
 
 
-export {getAllMedia, getSingleMedia, login, register, getUser, getUserProfilePic};
+export {getAllMedia, getSingleMedia, login, register, getUser, getUserProfilePic, uploadFile};

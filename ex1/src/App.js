@@ -20,7 +20,9 @@ class App extends Component {
     this.setState({user, avatar});
   };
 
-
+  setPicArray = (picArray) => {
+    this.setState({picArray});
+  };
 
   checkLogin = () => {
     return this.state.user !== null;
@@ -39,6 +41,15 @@ class App extends Component {
         <Router basename='/~edvards/school/mjk/ex1'>
           <div className='container'>
             <Nav checkLogin={this.checkLogin}/>
+
+            <Route exact path="/" render={(props) => (
+              <Login {...props} setUser={this.setUser}/>
+            )}/>
+
+            <Route path="/logout" render={(props) => (
+              <Logout {...props} setUser={this.setUser}/>
+            )}/>
+
             <Route  path="/home" render={(props) => (
                 <Front {...props} picArray={this.state.picArray}/>
             )}/>
@@ -49,16 +60,8 @@ class App extends Component {
               <Profile {...props} user={this.state.user} avatar={this.state.avatar}/>
             )}/>
 
-            <Route exact path="/" render={(props) => (
-              <Login {...props} setUser={this.setUser}/>
-            )}/>
-
-            <Route path="/logout" render={(props) => (
-              <Logout {...props} setUser={this.setUser}/>
-            )}/>
-
             <Route path="/upload" render={(props) => (
-              <Uploads {...props}/>
+              <Uploads {...props} setPicArray={this.setPicArray}/>
             )}/>
           </div>
         </Router>

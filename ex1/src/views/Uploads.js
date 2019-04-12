@@ -1,14 +1,10 @@
 import React, {Component} from 'react';
-import {uploadFile} from "../util/MediaAPI";
+import {getAllMedia, uploadFile} from "../util/MediaAPI";
 
 
 class Uploads extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
+  state = {};
 
-    }
-  }
 
   handleSubmit = (evt) => {
     evt.preventDefault();
@@ -16,8 +12,11 @@ class Uploads extends Component {
     for (let g in this.state ) {
       newForm.append(g, this.state[g]);
     }
-    uploadFile(localStorage.token, newForm).then(res => {console.log(res);}).catch(error => {console.log(error);})
+    uploadFile(localStorage.token, newForm).then(res => {console.log(res);}).catch(error => {console.log(error);});
     console.log(newForm.entries());
+
+    getAllMedia().then(result => {this.props.setPicArray(result);});
+    setTimeout(()=>{this.props.history.push('/');}, 4000);
   };
 
   handleInputChange = (evt) => {

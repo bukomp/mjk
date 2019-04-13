@@ -17,10 +17,10 @@ const Nav = (props) => {
               <Button variant={"text"} component={Link} to="/profile">Profile</Button>
             </ListItem>
             <ListItem>
-              <Button variant={"text"} component={Link} to="/logout">Logout</Button>
+              <Button variant={"text"} component={Link} to="/upload">Upload</Button>
             </ListItem>
             <ListItem>
-              <Button variant={"text"} component={Link} to="/upload">Upload</Button>
+              <Button variant={"text"} component={Link} to="/logout">Logout</Button>
             </ListItem>
           </React.Fragment>
           }

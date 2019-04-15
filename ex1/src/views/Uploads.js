@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {getAllMedia, uploadFile} from "../util/MediaAPI";
 import {CircularProgress, Input, TextField, Button} from '@material-ui/core';
+import Filter from "../components/Filter";
 
 
 
@@ -62,6 +63,7 @@ class Uploads extends Component {
           <br/>
           <TextField name="description" onChange={this.handleInputChange} placeholder="description" />
           <br/>
+          <br/>
 
           <input
             accept="image/*"
@@ -77,15 +79,16 @@ class Uploads extends Component {
             </Button>
           </label>
 
+          <br/>
 
           <br/>
           {this.state.isUploaded &&
             <React.Fragment>
-              <img src={this.state.file} style={{width:"200px"}} alt="img"/>
+              <Filter image={this.state.file}/>
               <br/>
             </React.Fragment>
           }
-          <Button  type="submit" variant="raised" value="uploadTheMeme" name="submit">Upload</Button>
+          <Button  type="submit" variant="contained" value="uploadTheMeme" name="submit">Upload</Button>
         </form>
       }
       {this.state.isSent &&

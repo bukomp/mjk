@@ -7,9 +7,9 @@ const mediaUrl = 'http://media.mw.metropolia.fi/wbma/uploads/';
 
 const Img = (props) => {
   console.log('props', props);
-  const {thumbnails, screenshot, title} = props.pic;
-  if (thumbnails !== null) {
-    return <img src={mediaUrl + thumbnails.w160} alt={title}/>;
+  const {thumbnails, screenshot, title, media_type} = props.pic;
+  if (thumbnails !== null || thumbnails !== undefined || media_type !== ("audio" || "video")) {
+    return <img src={mediaUrl + thumbnails["w160"]} alt={title}/>;
   } else {
     return <img src={mediaUrl + screenshot} alt={title}/>;
   }

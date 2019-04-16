@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {getAllMedia, uploadFile} from "../util/MediaAPI";
 import {CircularProgress, Input, TextField, Button} from '@material-ui/core';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Filter from "../components/Filter";
 
 
@@ -74,7 +75,7 @@ class Uploads extends Component {
             onChange={this.handleFileInput}
           />
           <label htmlFor="raised-button-file">
-            <Button variant="text" component="span">
+            <Button variant="outlined" component="span">
               Upload file
             </Button>
           </label>
@@ -88,7 +89,10 @@ class Uploads extends Component {
               <br/>
             </React.Fragment>
           }
-          <Button  type="submit" variant="contained" value="uploadTheMeme" name="submit">Upload</Button>
+          <Button color="primary" type="submit" variant="contained" value="uploadTheMeme" name="submit">
+            Upload
+            <CloudUploadIcon style={{marginLeft:"5px"}}/>
+          </Button>
         </form>
       }
       {this.state.isSent &&

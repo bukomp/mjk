@@ -10,7 +10,12 @@ class Filter extends Component {
       original: false,
       imgStyle: {
         brightness:50,
-        saturation:0,
+        saturation:50,
+        grayScale:0
+      },
+      sendStyle: {
+        brightness:100,
+        saturation:100,
         grayScale:0
       }
     };
@@ -18,16 +23,16 @@ class Filter extends Component {
 
   imgForFiltering = () => {
     const filtered= {
-      filter: `brightness(${this.state.imgStyle.brightness+50}%)
-              saturate(${this.state.imgStyle.saturation+50+(Math.pow((this.state.imgStyle.saturation-50), 2)/100)}%)
-              grayscale(${this.state.imgStyle.grayScale}%)`,
+      filter: `brightness(${this.state.sendStyle.brightness}%)
+              saturate(${this.state.sendStyle.saturation}%)
+              grayscale(${this.state.sendStyle.grayScale}%)`,
       width:"20rem",
       maxHeight:"50vh"
     };
     const notFiltered = {
       width:"20rem",
       maxHeight:"50vh"
-    }
+    };
     const style = (!this.state.original)?filtered:notFiltered;
     return (
       <img
@@ -44,21 +49,30 @@ class Filter extends Component {
   };
 
   handleBrightnessChange = (event, value) => {
-    const tempArr = this.state.imgStyle;
-    tempArr.brightness = value;
-    this.setState({imgStyle:tempArr});
-    console.log(this.state);
-  };
-  handleGrayScaleChange = (event, value) => {
-    const tempArr = this.state.imgStyle;
-    tempArr.grayScale = value;
-    this.setState({imgStyle:tempArr});
+    const tempArr1 = this.state.imgStyle;
+    const tempArr2 = this.state.sendStyle;
+    tempArr1.brightness = value;
+    tempArr2.brightness = value+50;
+    this.setState({imgStyle:tempArr1,sendStyle:tempArr2});
+    this.props.setSendStyle(tempArr2);
     console.log(this.state);
   };
   handleSaturationChange = (event, value) => {
-    const tempArr = this.state.imgStyle;
-    tempArr.saturation = value;
-    this.setState({imgStyle:tempArr});
+    const tempArr1 = this.state.imgStyle;
+    const tempArr2 = this.state.sendStyle;
+    tempArr1.saturation = value;
+    ((value+50+(Math.floor(Math.pow((value-50), 3)/100)))>=0)?tempArr2.saturation = value+50+(Math.floor(Math.pow((value-50), 3)/100)):tempArr2.saturation = 0;
+    this.setState({imgStyle:tempArr1,sendStyle:tempArr2});
+    this.props.setSendStyle(tempArr2);
+    console.log(this.state);
+  };
+  handleGrayScaleChange = (event, value) => {
+    const tempArr1 = this.state.imgStyle;
+    const tempArr2 = this.state.sendStyle;
+    tempArr1.grayScale = value;
+    tempArr2.grayScale = value;
+    this.setState({imgStyle:tempArr1,sendStyle:tempArr2});
+    this.props.setSendStyle(tempArr2);
     console.log(this.state);
   };
 

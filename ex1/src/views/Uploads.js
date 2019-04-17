@@ -11,21 +11,33 @@ class Uploads extends Component {
     form:{},
     isUploaded:false,
     isSent:false,
-    file:null
+    file:null,
+    sendStyle:{}
   };
 
 
   handleSubmit = (evt) => {
     evt.preventDefault();
-    this.setState({isSent:true});
+    this.formatDescription();
+    //this.setState({isSent:true});
     const newForm = new FormData();
     for (let g in this.state.form ) {
       newForm.append(g, this.state.form[g]);
     }
     uploadFile(localStorage.token, newForm).then(res => {console.log(res);}).catch(error => {console.log(error);});
-
-
     setTimeout(()=>{getAllMedia().then(result => {this.props.setPicArray(result);this.props.history.push('/');});}, 2000);
+  };
+
+  formatDescription = () => {
+    const tempArr = this.state.form;
+    const tempLine = "[d]"+this.state.form.description+"[/d][f]"+JSON.stringify(this.state.sendStyle)+"[/f]";
+    tempArr.description = tempLine;
+    this.setState({form:tempArr});
+  };
+
+  setSendStyle = (value) => {
+    this.setState({sendStyle: value});
+    console.log(this.state);
   };
 
   handleInputChange = (evt) => {
@@ -85,7 +97,7 @@ class Uploads extends Component {
           <br/>
           {this.state.isUploaded &&
             <React.Fragment>
-              <Filter image={this.state.file}/>
+              <Filter image={this.state.file} setSendStyle={this.setSendStyle}/>
               <br/>
             </React.Fragment>
           }
